@@ -2,10 +2,20 @@ services:
   postgres:
     image: postgres
     environment:
-      POSTGRES_PASSWORD: postgrespwd
+      - POSTGRES_PASSWORD=postgrespwd
     ports:
       - 5432:5432
     volumes:
       - pgdata:/var/lib/postgres/data
+  mongodb:
+    image: mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=mongopwd
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodata:/var/lib/mongodb/data
 volumes:
   pgdata:
+  mongodata:
