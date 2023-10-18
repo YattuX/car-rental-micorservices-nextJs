@@ -3,9 +3,10 @@
   "profiles": {
     "http": {
       "commandName": "Project",
-      "dotnetRunMessages": false,
+      "dotnetRunMessages": true,
       "launchBrowser": false,
-      "applicationUrl": "http://localhost:7001",
+      "launchUrl": "swagger",
+      "applicationUrl": "http://localhost:7002",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
