@@ -5,6 +5,8 @@ using AuctionService.DTO;
 using AuctionService.Entities;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Contracts;
+using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,11 +18,13 @@ namespace AuctionService.Controllers
     {
         private readonly AuctionDbContext _context;
         private readonly IMapper _mapper;
+        private readonly IPublishEndpoint _publishEndpoint;
 
-        public AuctionsController(AuctionDbContext context, IMapper mapper)
+        public AuctionsController(AuctionDbContext context, IMapper mapper, IPublishEndpoint publishEndpoint)
         {
             _context = context;
             _mapper = mapper;
+            _publishEndpoint = publishEndpoint;
         }
 
         
@@ -70,6 +74,10 @@ namespace AuctionService.Controllers
 
             await  _context.Auctions.AddAsync(auction);
 
+            var newAuction = _mapper.Map<AuctionDto>(auction);
+            
+            await _publishEndpoint.Publish(_mapper.Map<AuctionCreated>(newAuction));
+
             var result = _context.SaveChanges() > 0;
 
             if(!result) return BadRequest("Could not be change value to the DB");
@@ -90,6 +98,10 @@ namespace AuctionService.Controllers
             auction.Item.Mileage = updateAuction.Mileage ?? auction.Item.Mileage;
             auction.Item.Year = updateAuction.Year ?? auction.Item.Year;
 
+            var auctionToUpdate = _mapper.Map<UpdateAuctionDto>(auction);
+
+            await _publishEndpoint.Publish(_mapper.Map<AuctionUpdated>(auctionToUpdate));
+
             var result = await _context.SaveChangesAsync() > 0;
 
             if(!result) return BadRequest("Problem Saving Changes");
@@ -105,6 +117,8 @@ namespace AuctionService.Controllers
             if(auction == null) return NotFound();
 
             _context.Auctions.Remove(auction);
+
+            await _publishEndpoint.Publish<AuctionDeleted>(new {Id = auction.Id.ToString()});
 
             var result = await _context.SaveChangesAsync() > 0;
 
