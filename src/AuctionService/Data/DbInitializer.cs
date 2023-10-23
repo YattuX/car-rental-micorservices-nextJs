@@ -21,7 +21,7 @@ namespace AuctionService.Data
         private static async 
         Task SeedData(AuctionDbContext context)
         {
-            // context.Database.Migrate();
+            context.Database.Migrate();
 
             if (await context.Auctions.AnyAsync())
             {
