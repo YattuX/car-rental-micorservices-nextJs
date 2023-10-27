@@ -72,6 +72,8 @@ namespace AuctionService.Controllers
         {
             var auction = _mapper.Map<Auction>(createAuction);
 
+            auction.Seller = User.Identity.Name;
+
             await  _context.Auctions.AddAsync(auction);
 
             var newAuction = _mapper.Map<AuctionDto>(auction);
