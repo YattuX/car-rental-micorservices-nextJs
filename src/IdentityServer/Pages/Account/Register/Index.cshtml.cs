@@ -56,6 +56,8 @@ namespace IdentityServer.Pages.Account.Register
 
                 if(result.Succeeded)
                 {
+                    Console.WriteLine("valide");
+
                     await _userManager.AddClaimsAsync(user, new Claim[]
                     {
                         new Claim(JwtClaimTypes.Name, Input.Fullname)

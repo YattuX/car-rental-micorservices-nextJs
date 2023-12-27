@@ -7,6 +7,7 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Contracts;
 using MassTransit;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -67,6 +68,7 @@ namespace AuctionService.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<AuctionDto>> CreateAuction(CreateAuctionDto createAuction)
         {
@@ -86,6 +88,7 @@ namespace AuctionService.Controllers
             return CreatedAtAction(nameof(GetAuction), new {auction.Id}, _mapper.Map<AuctionDto>(auction));
         }
 
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateAuction(Guid id, UpdateAuctionDto updateAuction)
         {
@@ -93,6 +96,8 @@ namespace AuctionService.Controllers
                                             .FirstOrDefaultAsync(x => x.Id == id);
             
             if(auction == null) return NotFound();
+
+            if(auction.Seller != User.Identity.Name) return Forbid();
 
             auction.Item.Model = updateAuction.Model ?? auction.Item.Model;
             auction.Item.Color = updateAuction.Color ?? auction.Item.Color;
@@ -111,10 +116,13 @@ namespace AuctionService.Controllers
             return Ok();
         }
 
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteAuction(Guid id)
         {
             var auction =  await _context.Auctions.FindAsync(id);
+
+            auction.Seller = User.Identity.Name;
             
             if(auction == null) return NotFound();
 
