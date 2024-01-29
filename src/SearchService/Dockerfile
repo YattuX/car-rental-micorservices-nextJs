@@ -15,13 +15,13 @@ COPY src/Contracts/Contracts.csproj src/Contracts/Contracts.csproj
 RUN dotnet restore car-rental-micorservices-nextJs.sln
 
 #Copy the app folders over
-COPY src/AuctionService src/AuctionService
+COPY src/SearchService src/SearchService
 COPY src/Contracts src/Contracts
-RUN dotnet publish -c Release src/AuctionService/AuctionService.csproj  -o /app/src/out
+RUN dotnet publish -c Release src/SearchService/SearchService.csproj  -o /app/src/out
 
 #build runtime image
 
 FROM mcr.microsoft.com/dotnet/aspnet:7.0
 WORKDIR /app
 COPY --from=build /app/src/out .
-ENTRYPOINT [ "dotnet", "AuctionService.dll" ]
+ENTRYPOINT [ "dotnet", "SearchService.dll" ]

@@ -2,6 +2,7 @@ services:
   postgres:
     image: postgres
     environment:
+      - POSTGRES_USER=root
       - POSTGRES_PASSWORD=postgrespwd
     ports:
       - 5432:5432
@@ -21,6 +22,63 @@ services:
     ports:
       - 5672:5672
       - 15672:15672
+
+  auction-svc:
+    image: trycatchlearn/auction-svc:latest
+    build:
+      context: .
+      dockerfile: src/AuctionService/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Developpement
+      - ASPNETCORE_URL=http://+80
+      - Rabbitmq__Host=rabbitmq
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Username=root;Password=postgrespwd;Database=auction;
+      - IdentityServerUrl=http://identity-svc 
+    ports:
+      - 7001:80
+    depends_on:
+      - postgres
+      - rabbitmq
+  search-svc:
+    image: trycatchlearn/search-svc:latest
+    build:
+      context: .
+      dockerfile: src/SearchService/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Developpement
+      - ASPNETCORE_URL=http://+80
+      - Rabbitmq__Host=rabbitmq
+      - ConnectionStrings__MongoDbConnection=mongodb://root:mongopwd@mongodb:27017/?authSource=admin&readPreference=primary&ssl=false&directConnection=true
+      - AuctionServiceUrl=http://auction-svc 
+    ports:
+      - 7002:80
+    depends_on:
+      - mongodb
+      - rabbitmq
+      - auction-svc
+  identity-svc:
+    image: trycatchle arn/identity-svc:latest
+    build:
+      context: .
+      dockerfile: src/IdentityServer/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+      - ASPNETCORE_URL=http://+80
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Username=root;Password=postgrespwd;Database=identity;
+    ports:
+      - 5000:80
+    depends_on:
+      - postgres
+  gateway-svc:
+    image: trycatchlearn/gateway-svc:latest
+    build:
+      context: .
+      dockerfile: src/GatewayService/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+      - ASPNETCORE_URL=http://+80
+    ports:
+      - 6001:80
 
 volumes:
   pgdata:
