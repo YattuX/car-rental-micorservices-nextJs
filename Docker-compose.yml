@@ -57,7 +57,7 @@ services:
       - rabbitmq
       - auction-svc
   identity-svc:
-    image: trycatchle arn/identity-svc:latest
+    image: trycatchlearn/identity-svc:latest
     build:
       context: .
       dockerfile: src/IdentityServer/Dockerfile
