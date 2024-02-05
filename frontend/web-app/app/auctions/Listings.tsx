@@ -10,6 +10,7 @@ import { pages } from 'next/dist/build/templates/app-page'
 import { useParamsStrore } from '@/hooks/useParamsStore'
 import { shallow } from 'zustand/shallow'
 import qs from 'query-string'
+import EmptyFilter from '../components/EmptyFilter'
 
 
 export default function Listings() {
@@ -17,14 +18,12 @@ export default function Listings() {
   const params = useParamsStrore(state => ({
     pageNumber: state.pageNumber,
     pageSize : state.pageSize,
-    pageCount : state.pageCount
+    searchTerm : state.searchTerm,
+    orderBy : state.orderBy,
+    filterBy : state.filterBy
   }), shallow)
   const setParams = useParamsStrore(state => state.setParams)
   const url = qs.stringifyUrl({url: '', query:params})
-    // const [auctions, setAuctions] = useState<Auction[]>([])
-    // const [pageCount, setPageCount] = useState(0)
-    // const [pageNumber, setPageNumber] = useState(1)
-    // const [pageSize, setPageSize] = useState(4)
 
     function setPageNumber(pageNumber: number){
       setParams({pageNumber})
@@ -37,6 +36,8 @@ export default function Listings() {
     }, [url])
 
     if (!data) return (<h3>Loading...</h3>)
+    
+    if(data.totalCount === 0) return <EmptyFilter showReset/>
 
   return (
     <>
