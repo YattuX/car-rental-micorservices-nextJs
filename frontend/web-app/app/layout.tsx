@@ -1,6 +1,7 @@
 import { Metadata } from 'next'
 import './globals.css'
 import NavBar from './nav/NavBar'
+import ToasterProvider from './providers/ToasterProvider'
 
 
 export const metadata: Metadata = {
@@ -15,7 +16,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      
+      <ToasterProvider/>
       <body>
         <NavBar/>
         <main className='p-4'>
