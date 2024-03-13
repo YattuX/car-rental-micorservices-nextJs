@@ -7,9 +7,11 @@ EXPOSE 80
 COPY car-rental-micorservices-nextJs.sln car-rental-micorservices-nextJs.sln
 COPY src/AuctionService/AuctionService.csproj src/AuctionService/AuctionService.csproj
 COPY src/SearchService/SearchService.csproj src/SearchService/SearchService.csproj
+COPY src/BiddingService/BiddingService.csproj src/BiddingService/BiddingService.csproj
 COPY src/GatewayService/GatewayService.csproj src/GatewayService/GatewayService.csproj
 COPY src/IdentityServer/IdentityServer.csproj src/IdentityServer/IdentityServer.csproj
 COPY src/Contracts/Contracts.csproj src/Contracts/Contracts.csproj
+
 
 #Restore package deps
 RUN dotnet restore car-rental-micorservices-nextJs.sln
