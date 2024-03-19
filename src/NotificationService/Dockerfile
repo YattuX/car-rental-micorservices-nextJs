@@ -13,17 +13,17 @@ COPY src/GatewayService/GatewayService.csproj src/GatewayService/GatewayService.
 COPY src/IdentityServer/IdentityServer.csproj src/IdentityServer/IdentityServer.csproj
 COPY src/Contracts/Contracts.csproj src/Contracts/Contracts.csproj
 
-
 #Restore package deps
 RUN dotnet restore car-rental-micorservices-nextJs.sln
 
 #Copy the app folders over
-COPY src/IdentityServer src/IdentityServer
-RUN dotnet publish -c Release src/IdentityServer/IdentityServer.csproj  -o /app/src/out
+COPY src/NotificationService src/NotificationService
+COPY src/Contracts src/Contracts
+RUN dotnet publish -c Release src/NotificationService/NotificationService.csproj  -o /app/src/out
 
 #build runtime image
 
 FROM mcr.microsoft.com/dotnet/aspnet:7.0
 WORKDIR /app
 COPY --from=build /app/src/out .
-ENTRYPOINT [ "dotnet", "IdentityServer.dll" ]p
+ENTRYPOINT [ "dotnet", "NotificationService.dll" ]

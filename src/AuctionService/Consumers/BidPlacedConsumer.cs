@@ -26,6 +26,7 @@ namespace AuctionService.Consumers
             if(auction.CurrentHidhBid == null || context.Message.BidStatus.Contains("Accepted") && context.Message.Amount > auction.CurrentHidhBid)
             {
                 auction.CurrentHidhBid = context.Message.Amount;
+                await _dbContext.SaveChangesAsync();
             } 
         }
     }

@@ -39,3 +39,11 @@ export async function deleteAuction(id: string){
     revalidatePath(`auctions/${id}`)
     return res;
 }
+
+export async function getBidsForAuction(id:string): Promise<any> {
+    return await fetchWrapper.get(`bids/${id}`);
+}
+
+export async function placeBidForAuction(auctionId: string, amount:number){
+    return await fetchWrapper.post(`bids?auctionId=${auctionId}&amount=${amount}`, {})
+}

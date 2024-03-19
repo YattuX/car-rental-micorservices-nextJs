@@ -28,7 +28,7 @@ export default function Search() {
                 if(e.key === 'Enter'){ search()}
             }}
             onChange={onChange}
-            type="text" className='flex-grow pl-5 bg-transparent focus:outline-none border-transparent focus:border-none focus:ring-0 text-sm '
+            type="text" className='input-custom text-sm '
         placeholder='Search for cars by make, model or color'
         />
         <button onClick={search}>

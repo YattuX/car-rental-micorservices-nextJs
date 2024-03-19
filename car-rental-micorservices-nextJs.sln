@@ -17,13 +17,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BiddingService", "src\Biddi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GatewayService", "src\GatewayService\GatewayService.csproj", "{5EE44108-3DC8-41F7-94B5-2FF2E037EB1A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotificationService", "src\NotificationService\NotificationService.csproj", "{6B43B0FE-8C3D-4485-94A2-F203364E65C6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{FEA87492-FF3C-4017-A892-4E49ACBC59A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -50,6 +49,13 @@ Global
 		{5EE44108-3DC8-41F7-94B5-2FF2E037EB1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5EE44108-3DC8-41F7-94B5-2FF2E037EB1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5EE44108-3DC8-41F7-94B5-2FF2E037EB1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B43B0FE-8C3D-4485-94A2-F203364E65C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B43B0FE-8C3D-4485-94A2-F203364E65C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B43B0FE-8C3D-4485-94A2-F203364E65C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B43B0FE-8C3D-4485-94A2-F203364E65C6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{FEA87492-FF3C-4017-A892-4E49ACBC59A3} = {CD6FA3EC-0E44-448C-BA74-FA51819C0FDB}
@@ -58,5 +64,6 @@ Global
 		{C8332F91-9B37-4C0F-8E84-77B621907275} = {CD6FA3EC-0E44-448C-BA74-FA51819C0FDB}
 		{0E6D0BD9-BBAB-46B2-B72B-0FC7D8F3865C} = {CD6FA3EC-0E44-448C-BA74-FA51819C0FDB}
 		{5EE44108-3DC8-41F7-94B5-2FF2E037EB1A} = {CD6FA3EC-0E44-448C-BA74-FA51819C0FDB}
+		{6B43B0FE-8C3D-4485-94A2-F203364E65C6} = {CD6FA3EC-0E44-448C-BA74-FA51819C0FDB}
 	EndGlobalSection
 EndGlobal

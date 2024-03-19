@@ -7,6 +7,7 @@ type Props = {
     auction: Auction
 }
 export default function DetailedSpecs({auction}: Props) {
+
     return (
         <Table striped={true}>
             <Table.Body className="divide-y">
