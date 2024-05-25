@@ -6,7 +6,8 @@ const nextConfig = {
             'cdn.pixabay.com',
             'media.istockphoto.com'
         ]
-    }
+    },
+    output: 'standalone'
 }
 
 module.exports = nextConfig

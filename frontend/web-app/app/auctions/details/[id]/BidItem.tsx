@@ -8,6 +8,7 @@ type Props = {
 }
 
 export default function BidItem({bid}: Props) {
+    console.log(bid)
     function getBidInfo(){
         let bgColor = '';
         let text = '';
@@ -16,12 +17,14 @@ export default function BidItem({bid}: Props) {
                 bgColor = 'bg-green-600'
                 text = 'Bid Accepted'
                 break;
-            case 'AcceptedBelowReserve':
+            case "AcceptedBelowReserve":
                 bgColor = 'bg-amber-500'
                 text = 'Reseve not met'
-            case 'Toolow':
+                break;
+            case 'TooLow':
                 bgColor = 'bg-red-200'
                 text = 'Bid was too low'
+                break;
             default:
                 bgColor = 'bg-red-200'
                 text = 'Bid placed after auction finished'

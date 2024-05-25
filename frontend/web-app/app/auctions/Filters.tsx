@@ -1,10 +1,9 @@
 import { useParamsStrore } from '@/hooks/useParamsStore';
-import { Button } from 'flowbite-react';
+import { Button, ButtonGroup } from 'flowbite-react';
 import {AiOutlineClockCircle, AiOutlineSortAscending} from 'react-icons/ai'
 import {BsFillStopCircleFill, BsStopwatchFill} from 'react-icons/bs'
 import {GiFinishLine, GiFlame} from 'react-icons/gi'
 
-import { ButtonGroup } from 'flowbite-react/lib/esm/components/Button/ButtonGroup';
 import React from 'react'
 
 type Props = {

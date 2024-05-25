@@ -1,3 +1,9 @@
+networks: 
+  custom:
+    ipam:
+      config:
+        - subnet: 10.5.0.0/16
+
 services:
   postgres:
     image: postgres
@@ -8,6 +14,8 @@ services:
       - 5432:5432
     volumes:
       - pgdata:/var/lib/postgres/data
+    networks:
+      custom:
   mongodb:
     image: mongo
     environment:
@@ -17,11 +25,15 @@ services:
       - 27017:27017
     volumes:
       - mongodata:/var/lib/mongodb/data
+    networks:
+      custom:
   rabbitmq:
     image: rabbitmq:3-management-alpine
     ports:
       - 5672:5672
       - 15672:15672
+    networks:
+      custom:
 
   auction-svc:
     image: trycatchlearn/auction-svc:latest
@@ -45,6 +57,8 @@ services:
     depends_on:
       - postgres
       - rabbitmq
+    networks:
+      custom:
   search-svc:
     image: trycatchlearn/search-svc:latest
     build:
@@ -62,6 +76,8 @@ services:
       - mongodb
       - rabbitmq
       - auction-svc
+    networks:
+      custom:
   identity-svc:
     image: trycatchlearn/identity-svc:latest
     build:
@@ -70,11 +86,14 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Docker
       - ASPNETCORE_URL=http://+80
+      - ClientApp=http://app.carties.com
       - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Username=root;Password=postgrespwd;Database=identity;
-    ports:
-      - 5000:80
+      - VIRTUAL_HOST=id.carties.com
     depends_on:
       - postgres
+    networks:
+      custom:
+        ipv4_address: 10.5.0.200
   gateway-svc:
     image: trycatchlearn/gateway-svc:latest
     build:
@@ -83,8 +102,10 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Docker
       - ASPNETCORE_URL=http://+80
-    ports:
-      - 6001:80
+      - ClientApp=https://app.carties.com
+      - VIRTUAL_HOST=api.carties.com
+    networks:
+      custom:
   bid-svc:
     image: trycatchlearn/bid-svc:latest
     build:
@@ -102,6 +123,8 @@ services:
     depends_on:
       - mongodb
       - rabbitmq
+    networks:
+      custom:
   
   notify-svc:
     image: trycatchlearn/notify-svc:latest
@@ -116,6 +139,39 @@ services:
       - 7004:80
     depends_on:
       - rabbitmq
+    networks:
+      custom:
+
+  web-app:
+    image: trycatchlearn/web-app
+    build:
+      context: .
+      dockerfile: frontend/web-app/Dockerfile
+    volumes:
+      - /var/lib/web/data
+    extra_hosts:
+      - id.carties.com:10.5.0.200
+    environment:
+      - NEXTAUTH_SECRET=somethingreallyreallysecret
+      - NEXTAUTH_URL=http://app.carties.com
+      - NEXTAUTH_URL_INTERNAL=http://web-app:3000
+      - API_URL=http://gateway-svc/
+      - ID_URL=http://id.carties.com
+      - NEXT_PUBLIC_NOTIFY_URL=http://gateway-svc/notifications
+      - VIRTUAL_HOST=app.carties.com
+      - VIRTUAL_PORT=3000
+    networks:
+      custom:
+  nginx-proxy: 
+    image: nginxproxy/nginx-proxy
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      custom:
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./devcerts:/etc/nginx/certs
 
 volumes:
   pgdata:
